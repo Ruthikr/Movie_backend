@@ -1,6 +1,13 @@
 import requests
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
-API_KEY = '2O3w278YolWV4hnFPeNZAcu78v01mBRuKIL2YVfm'
+WATCHMODE_API_KEY = os.getenv("WATCHMODE_API_KEY")
+
+
+
+API_KEY = WATCHMODE_API_KEY
 SEARCH_URL = 'https://api.watchmode.com/v1/search/'
 MOVIE_DETAILS_URL = 'https://api.watchmode.com/v1/title/{title_id}/details/'
 AUTOSEARCH_URL="https://api.watchmode.com/v1/autocomplete-search/"
@@ -72,40 +79,3 @@ def search_movie_details(query, limit=5):  # You can set the limit here (3 or 5)
         
         
     return movies
-
-
-
-
-'''
-def search_movie_details(query):
-    try:
-        # Search for movies by query
-        response = requests.get(SEARCH_URL, params={'apiKey': API_KEY, 'search_field': 'name', 'search_value': query})
-        data = response.json()
-        
-        if not data.get("title_results"):
-            return {'error': 'No movies found'}
-        data=data["title_results"][:1]
-        movies = []
-        for movie in data:
-            movies.append(movie["imdb_id"])
-        # Check if the response contains title_results
-        results=[]
-        for i in movies:
-              # Get movie details
-            movie_details_response = requests.get(MOVIE_DETAILS_URL.format(imdb_id=i), params={'apiKey': API_KEY})
-            results.append(movie_details_response)
-        
-            
-        
-        final={"results":results}
-        # Return the top 3 results
-        return final
-
-    except requests.RequestException as e:
-        return {'error': 'Failed to fetch movie details', 'details': str(e)}
-  '''
-'''
-def after():
-  movie_sources_response=requests.get(SOURCES_URL.format(imdb_id=i),params={'apiKey':API_KEY})
-  '''
